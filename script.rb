@@ -34,6 +34,20 @@ module Enumerable
         puts a
     end
 
+    def my_all?(value = nil, &block)
+        if block_given?
+            my_each { |x| return false if block.call(x) == false}
+        elsif value.is_a?(Class)
+            my_each { |x| return false if x.is_a?(value) == false }        
+        elsif value.is_a?(Regexp)
+            my_each { |x| return false if value.match?(x.to_s) == false }
+        elsif value.nil? == false
+            my_each { |x| return false if x != value}
+        else
+            my_each {|x| return false unless x}
+        end
+        return true
+    end
 
         
 a = ["Raj", "Manish", "Pratima", "Pooja"]
@@ -45,4 +59,11 @@ a.my_each_with_index { |friend, index| puts friend if index.even?}
 puts "=========================="
 puts "my_select example:"
 a.my_select {|x| x != "Raj"}
+puts "=========================="
+puts "my_all? example:"
+b = [4, 5.0]
+a.my_all? {|word| word.length <= 1}
+b.my_all?(Numeric)
+%w[ant bear cat].my_all?(/t/)
+
 end
