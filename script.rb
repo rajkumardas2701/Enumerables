@@ -49,6 +49,21 @@ module Enumerable
         return true
     end
 
+    def my_any?(value = nil, &block)
+        if block_given?
+            my_each { |x| return true if block.call(x)}
+        elsif value.is_a?(Class)
+            my_each { |x| return true if x.is_a?(value)}        
+        elsif value.is_a?(Regexp)
+            my_each { |x| return true if value.match?(x.to_s)}
+        elsif value.nil? == false
+            my_each { |x| return true if x.eq(value)}
+        else
+            my_each {|x| return true if x}
+        end
+        return false
+    end
+
         
 a = ["Raj", "Manish", "Pratima", "Pooja"]
 puts "my_each example:"
@@ -62,8 +77,12 @@ a.my_select {|x| x != "Raj"}
 puts "=========================="
 puts "my_all? example:"
 b = [4, 5.0]
-a.my_all? {|word| word.length <= 1}
-b.my_all?(Numeric)
-%w[ant bear cat].my_all?(/t/)
+puts a.my_all? {|word| word.length <= 1}
+puts b.my_all?(Numeric)
+puts a.my_all?(/t/)
+puts "=========================="
+puts "my_any? example:"
+b = [4, 5.0]
+puts a.my_any? {|word| word.length <= 1}
 
 end
