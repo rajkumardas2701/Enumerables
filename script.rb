@@ -64,6 +64,21 @@ module Enumerable
         return false
     end
 
+    def my_none?(value = nil, &block)
+        if block_given?
+            my_each { |x| return false if block.call(x)}
+        elsif value.is_a?(Class)
+            my_each { |x| return false if x.is_a?(value)}        
+        elsif value.is_a?(Regexp)
+            my_each { |x| return false if value.match?(x.to_s)}
+        elsif value.nil? == false
+            my_each { |x| return false if x.eq(value)}
+        else
+            my_each {|x| return false if x}
+        end
+        return true
+    end
+
         
 a = ["Raj", "Manish", "Pratima", "Pooja"]
 puts "my_each example:"
@@ -84,5 +99,8 @@ puts "=========================="
 puts "my_any? example:"
 b = [4, 5.0]
 puts a.my_any? {|word| word.length <= 1}
-
+puts "=========================="
+puts "my_none? example:"
+puts a.my_none?(/d/) 
+puts [1, 3.14, 42].none?(Float)
 end
