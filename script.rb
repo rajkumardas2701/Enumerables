@@ -89,6 +89,12 @@ module Enumerable
           return count
     end
 
+    def my_map
+        m = []
+        my_each {|x| m.push(x)}
+        return m
+    end
+
         
 a = ["Raj", "Manish", "Pratima", "Pooja"]
 puts "my_each example:"
@@ -117,4 +123,8 @@ puts "=========================="
 puts "my_none? example:"
 puts b.my_count(4)
 puts b.my_count {|x| x %3 == 0}
+puts "=========================="
+puts "my_map? example:"
+puts a.my_map
+puts b.my_map
 end
