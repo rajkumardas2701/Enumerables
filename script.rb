@@ -79,6 +79,16 @@ module Enumerable
         return true
     end
 
+    def my_count(value = nil, &block)
+        count = 0
+              if block_given?
+                  my_each { |x| count += 1 if block.call(x)}
+              elsif value.nil? == false
+                  my_each { |x| count += 1 if x == value}
+              end
+          return count
+    end
+
         
 a = ["Raj", "Manish", "Pratima", "Pooja"]
 puts "my_each example:"
@@ -103,4 +113,8 @@ puts "=========================="
 puts "my_none? example:"
 puts a.my_none?(/d/) 
 puts [1, 3.14, 42].none?(Float)
+puts "=========================="
+puts "my_none? example:"
+puts b.my_count(4)
+puts b.my_count {|x| x %3 == 0}
 end
